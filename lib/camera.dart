@@ -1,63 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'package:flutter/services.dart';
 import 'dart:async';
-import 'package:camera/camera.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 
 class CameraShow extends StatefulWidget {
   @override
-  _CameraAppState createState() => new _CameraAppState();
+  _CameraShow createState() => new _CameraShow();
 }
 
-void logError(String code, String message) =>
-    print('Error: $code\nError Message: $message');
-
-class _CameraAppState extends State<CameraShow> {
-  CameraController controller;
-  bool _isReady = false;
-  List<CameraDescription> cameras;
-
-  Future<Null> initializeCameras() async {
-  // Fetch the available cameras before initializing the app.
-       try {
-      // initialize cameras.
-      cameras = await availableCameras();
-      // initialize camera controllers.
-      controller = new CameraController(cameras[0], ResolutionPreset.medium);
-      await controller.initialize();
-    } on CameraException catch (e) {
-      logError(e.code, e.description);
-    }
-    // if (!isMounted) return;
-    setState(() {
-      _isReady = true;
-    });
-  }
+class _CameraShow extends State<CameraShow> {
+  String barcode = "";
 
   @override
-  void initState() {
+  initState() {
     super.initState();
-
-    this.initializeCameras();
-  }
-
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!_isReady) return new Container();
+    return new Center(
+            child: new Column(
+              children: <Widget>[
+                new Container(
+                  child: new MaterialButton(
+                      onPressed: scan, child: new Text("Scan")),
+                  padding: const EdgeInsets.all(8.0),
+                ),
+                new Text(barcode),
+              ],
+            ),
+          );
+  }
 
-    if (!controller.value.isInitialized) {
-      return new Container();
+  Future scan() async {
+    try {
+      String barcode = await BarcodeScanner.scan();
+      setState(() => this.barcode = barcode);
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.CameraAccessDenied) {
+        setState(() {
+          this.barcode = 'The user did not grant the camera permission!';
+        });
+      } else {
+        setState(() => this.barcode = 'Unknown error: $e');
+      }
+    } on FormatException{
+      setState(() => this.barcode = 'null (User returned using the "back"-button before scanning anything. Result)');
+    } catch (e) {
+      setState(() => this.barcode = 'Unknown error: $e');
     }
-    return new AspectRatio(
-        aspectRatio:
-        controller.value.aspectRatio,
-        child: new CameraPreview(controller));
   }
 }
 
@@ -77,7 +70,5 @@ class CameraApp extends StatelessWidget {
         );
       },
     );
-
-    // return new CameraShow();
   }
 }

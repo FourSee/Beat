@@ -2,7 +2,7 @@ name: polyrhythm_client
 description: A new Flutter project.
 
 dependencies:
-  camera: "^0.2.1"
+  barcode_scan: "^0.0.4"
   flutter:
     sdk: flutter
 
