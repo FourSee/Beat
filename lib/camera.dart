@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/services.dart';
-import 'dart:async';
+
 import 'package:barcode_scan/barcode_scan.dart';
+
+import 'dart:async';
 
 class CameraShow extends StatefulWidget {
   @override
