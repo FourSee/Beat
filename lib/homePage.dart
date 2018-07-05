@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'processList.dart';
+import 'messageList.dart';
 import 'camera.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -23,7 +23,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   List<Widget> list = <Widget>[
     ListTile(
       title: Text('CineArts at the Empire',
@@ -54,19 +53,22 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("cheese"),
+      ),
       body: new Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: new CupertinoTabScaffold(
           tabBar: new CupertinoTabBar(
             items: <BottomNavigationBarItem> [
-              ProcessList.barItem,
+              MessageList.barItem,
               CameraApp.barItem,
             ],
           ),
           tabBuilder: (BuildContext context, int index) {
             if (index == 0) {
-              return new ProcessList(index: index,title: "pants",list: list,);
+              return new MessageList(index: index,title: "pants",list: list,);
             } else if (index == 1) {
               return new CameraApp();
             }

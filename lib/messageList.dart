@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-class ProcessList extends StatelessWidget {
-  const ProcessList({this.title, this.index, this.list});
+class MessageList extends StatelessWidget {
+  const MessageList({this.title, this.index, this.list});
 
-    static const BottomNavigationBarItem barItem  = BottomNavigationBarItem(
-                      icon: const Icon(CupertinoIcons.home),
-                      title: const Text('Process List'),
-                    );
+  static const BottomNavigationBarItem barItem  = BottomNavigationBarItem(
+                    icon: const Icon(CupertinoIcons.home),
+                    title: const Text('Message List'),
+                  );
 
   final String title;
   final int index;
